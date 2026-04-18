@@ -1,4 +1,4 @@
-# TotalScribe
+# MASTOV
 
 AI-powered medical SOAP note generation from audio recordings. Transform patient encounter audio into intelligent clinical notes using agentic AI.
 
@@ -44,8 +44,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Arkapravo-Ghosh/totalscribe.git
-cd totalscribe
+git clone https://github.com/ShriGanesha/mashtov.git
+cd mashtov
 ```
 
 ### 2. Backend Setup
@@ -134,7 +134,7 @@ python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
 ## Project Structure
 
 ```
-totalscribe/
+mashtov/
 ├── backend/                    # FastAPI backend
 │   ├── main.py                # Application entry point
 │   ├── requirements.txt       # Python dependencies
