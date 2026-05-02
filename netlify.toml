@@ -1,10 +1,15 @@
 [build]
   command = "npm run build"
-  publish = ".next/server"
+  publish = ".next"
 
 [[redirects]]
   from = "/_next/static/*"
   to = "/_next/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/_next/image*"
+  to = "/_next/image"
   status = 200
 
 [[redirects]]
