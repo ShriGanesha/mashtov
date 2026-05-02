@@ -74,7 +74,6 @@ type SoapNoteActionResult =
 
 type SoapNoteGeneratorProps = {
   systemInfo: SystemInfo;
-  generateSoapNoteAction: (formData: FormData, requestId?: string) => Promise<SoapNoteActionResult>;
 };
 
 const statusLabelMap: Record<Status, string> = {
@@ -179,10 +178,7 @@ function getProgressMessage(
   }
 }
 
-export default function VisitPageClient({
-  systemInfo,
-  generateSoapNoteAction,
-}: SoapNoteGeneratorProps) {
+export default function VisitPageClient({ systemInfo }: SoapNoteGeneratorProps) {
   const [status, setStatus] = useState<Status>('idle');
   const [soapNote, setSoapNote] = useState('');
   const [transcript, setTranscript] = useState('');
@@ -636,10 +632,15 @@ export default function VisitPageClient({
 
         // Step 3: Upload audio file
         setProgressLog(['Visit created successfully', 'Uploading audio...']);
-        const result = await generateSoapNoteAction(formData, visitId);
+        const uploadRes = await fetch(`${API_BASE_URL}/soap/${visitId}`, {
+          method: 'POST',
+          body: formData,
+          cache: 'no-store',
+        });
 
-        if (!result || !result.success) {
-          const message = result?.error ?? 'Unable to upload audio file.';
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json().catch(() => ({}));
+          const message = errorData.error || 'Unable to upload audio file.';
           if (!hasCompletedRef.current) {
             setStatus('error');
             setError(message);

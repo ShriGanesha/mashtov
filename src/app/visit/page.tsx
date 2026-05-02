@@ -1,14 +1,34 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import VisitPageClient from "./client";
-import { fetchSystemInfo, generateSoapNote } from "../actions";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Logo } from "@/components/logo";
 
-export default async function VisitPage() {
-  const systemInfo = await fetchSystemInfo();
+export default function VisitPage() {
+  const [systemInfo, setSystemInfo] = useState(null);
+
+  useEffect(() => {
+    async function loadSystemInfo() {
+      try {
+        const res = await fetch("/api/system-info", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          setSystemInfo(data);
+        } else {
+          setSystemInfo(null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch system info", error);
+        setSystemInfo(null);
+      }
+    }
+    loadSystemInfo();
+  }, []);
 
   return (
     <main className="h-screen bg-muted/20 py-8 lg:py-10 overflow-hidden">
-      <div className="h-full flex flex-col space-y-6 px-6 lg:space-y-8 lg:px-8">
+      <div className="h-full flex flex-col space-y-6 lg:space-y-8 lg:px-8">
         <div className="absolute top-4 left-4 lg:top-6 lg:left-6">
           <Logo />
         </div>
@@ -25,10 +45,7 @@ export default async function VisitPage() {
           </p>
         </section>
 
-        <VisitPageClient
-          systemInfo={systemInfo}
-          generateSoapNoteAction={generateSoapNote}
-        />
+        <VisitPageClient systemInfo={systemInfo} />
       </div>
     </main>
   );
