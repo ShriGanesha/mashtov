@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build && cp -r .next/standalone/. .next/server"
-  publish = ".next/server"
+  command = "npm run build"
+  publish = ".next/standalone"
 
 [[redirects]]
   from = "/_next/static/*"
